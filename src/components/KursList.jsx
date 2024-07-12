@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function KursList() {
   const [kurse, setKurse] = useState([]);
   const [error, setError] = useState(null);
   const [fachbereichId, setFachbereichId] = useState(1); 
+  const navigate = useNavigate(); 
+
+  const handleAdminLoginClick = () => {
+    navigate('/login'); 
+  };
 
   useEffect(() => {
     const fetchKurse = async () => {
@@ -35,6 +41,7 @@ function KursList() {
           value={fachbereichId}
           onChange={handleFachbereichIdChange}
         />
+        <button onClick={handleAdminLoginClick}>Admin Login</button>
       </div>
 
       {error ? (

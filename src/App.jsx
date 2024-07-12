@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './components/Login';
-import Timetable from './components/Timetable';
 import PrivateRoute from './components/PrivateRoute';
 import KursList from './components/KursList'; // Import component KursList
 import AdminDashboard from './components/AdminDashboard';
@@ -26,7 +25,6 @@ function App() {
           <Route path="/raum" element={<RaumManagement />} />
         </Route>
         <Route path="/" element={<KursList />} /> 
-        <Route path="/timetable" element={<PrivateRoute element={<Timetable />} />} />
       </Routes>
     </BrowserRouter>
   );
