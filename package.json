@@ -16,7 +16,6 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "prestart": "node clearToken.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
