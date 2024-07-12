@@ -3,6 +3,10 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import axios from 'axios';
+
+axios.defaults.baseURL = 'https://prak-swe.onrender.com';  // Địa chỉ của backend
+//axios.defaults.withCredentials = true; // Cho phép gửi cookie
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
