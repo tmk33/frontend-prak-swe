@@ -75,11 +75,11 @@ function StudentManagement() {
     navigate(`/student/edit/${studentId}`); // Chuyển hướng đến trang chỉnh sửa
   };
 
-  const handleDeleteClick = async (studentId) => {
+  const handleDeleteClick = async (studentId, studentName) => {
     const token = localStorage.getItem('token');
-    if (window.confirm('Are you sure you want to delete this student?')) {
+    if (window.confirm(`Are you sure you want to delete ${studentName}?`)) {
       try {
-        await axios.delete(`https://prak-swe.onrender.com/student/${studentId}`, {
+        await axios.delete(`https://prak-swe.onrender.com/student/${studentId}/${studentName}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -93,6 +93,7 @@ function StudentManagement() {
       }
     }
   };
+
   return (
     <div className={styles.container}>
       <h2>Student verwalten</h2>
@@ -143,7 +144,7 @@ function StudentManagement() {
               <td>{student.semester}</td>
               <td>
                 <button onClick={() => handleUpdateClick(student.id)}>Update</button>
-                <button onClick={() => handleDeleteClick(student.id)}>Delete</button>
+                <button onClick={() => handleDeleteClick(student.id, student.name)}>Delete</button>
               </td>
             </tr>
           ))}
