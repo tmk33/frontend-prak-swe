@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import styles from '../css/StudentManagement.module.css';
 
 function StudentManagement() {
   const [students, setStudents] = useState([]);
@@ -69,7 +70,7 @@ function StudentManagement() {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <h2>Student verwalten</h2>
 
       <input
@@ -77,26 +78,27 @@ function StudentManagement() {
         placeholder="Filter by Student ID"
         value={studentIdFilter}
         onChange={handleStudentIdFilterChange}
+        className={styles.input}
       />
 
-
-      <button onClick={handleAddStudentClick}>Add Student</button>
+      <div className={styles.buttonContainer}>
+        <button onClick={handleAddStudentClick} className={styles.addButton}>Add Student</button>
+        <button className={styles.updateButton}>Update Student</button>
+        <button className={styles.deleteButton}>Delete Student</button>
+      </div>
 
       {showAddStudentForm && (
-        <form onSubmit={handleSubmit}>
-          {/* Input fields for name, email, geburtsdatum, fachbereich_id, semester */}
-          <input type="text" name="name" placeholder="Name" value={newStudent.name} onChange={handleInputChange} />
-            <input type="email" name="email" placeholder="Email" value={newStudent.email} onChange={handleInputChange} />
-            <input type="date" name="geburtsdatum" placeholder="Geburtsdatum" value={newStudent.geburtsdatum} onChange={handleInputChange} />
-            <input type="number" name="fachbereich_id" placeholder="Fachbereich ID" value={newStudent.fachbereich_id} onChange={handleInputChange} />
-            <input type="number" name="semester" placeholder="Semester" value={newStudent.semester} onChange={handleInputChange} />
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <input type="text" name="name" placeholder="Name" value={newStudent.name} onChange={handleInputChange} required />
+          <input type="email" name="email" placeholder="Email" value={newStudent.email} onChange={handleInputChange} required />
+          <input type="date" name="geburtsdatum" placeholder="Geburtsdatum" value={newStudent.geburtsdatum} onChange={handleInputChange} required />
+          <input type="number" name="fachbereich_id" placeholder="Fachbereich ID" value={newStudent.fachbereich_id} onChange={handleInputChange} required />
+          <input type="number" name="semester" placeholder="Semester" value={newStudent.semester} onChange={handleInputChange} required />
           <button type="submit">Add</button>
         </form>
       )}
-      <button>Update Student</button>
-      <button>Delete Student</button>
 
-      <table>
+      <table className={styles.table}>
         <thead>
           <tr>
             <th>ID</th>
@@ -113,7 +115,7 @@ function StudentManagement() {
               <td>{student.id}</td>
               <td>{student.name}</td>
               <td>{student.email}</td>
-              <td>{student.geburtsdatum.split('T')[0]}</td> 
+              <td>{student.geburtsdatum.split('T')[0]}</td>
               <td>{student.fachbereich_id}</td>
               <td>{student.semester}</td>
             </tr>
