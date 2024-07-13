@@ -15,11 +15,11 @@ function StudentManagement() {
     fachbereich_id: '',
     semester: '',
   });
-  const [updatedStudent, setUpdatedStudent] = useState(null); // Thêm state cho sinh viên đang cập nhật
-  const [showUpdateForm, setShowUpdateForm] = useState(false); // Biến state để kiểm soát việc hiển thị form cập nhật
+  const [updatedStudent, setUpdatedStudent] = useState(null); 
+  const [showUpdateForm, setShowUpdateForm] = useState(false); 
  
 
-  const navigate = useNavigate(); // Sử dụng useNavigate hook
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -53,7 +53,7 @@ function StudentManagement() {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setNewStudent(prevState => ({ ...prevState, [name]: value }));
-    //setUpdatedStudent(prevState => ({ ...prevState, [name]: value }));
+    
   };
 
   const handleSubmit = async (event) => {
@@ -143,7 +143,7 @@ function StudentManagement() {
 
   return (
     <div className={styles.container}>
-      <h2>Student verwalten</h2>
+      <h1>Student verwalten</h1>
 
       <input
         type="text"
