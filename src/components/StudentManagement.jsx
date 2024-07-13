@@ -202,8 +202,8 @@ function StudentManagement() {
               <td>{student.fachbereich_id}</td>
               <td>{student.semester}</td>
               <td>
-                <button onClick={() => handleUpdateClick(student)}>Update</button>
-                <button onClick={() => handleDeleteClick(student.id, student.name)}>Delete</button>
+                <button className={styles.updateButton} onClick={() => handleUpdateClick(student)}>Update</button>
+                <button className={styles.deleteButton} onClick={() => handleDeleteClick(student.id, student.name)}>Delete</button>
               </td>
             </tr>
           ))}
