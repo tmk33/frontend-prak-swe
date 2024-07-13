@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; 
 import styles from '../css/StudentManagement.module.css';
 
 function StudentManagement() {
@@ -14,6 +15,7 @@ function StudentManagement() {
     fachbereich_id: '',
     semester: '',
   });
+  const navigate = useNavigate(); // Sử dụng useNavigate hook
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -52,23 +54,45 @@ function StudentManagement() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const token = localStorage.getItem('token'); // Get admin token from localStorage
+    const token = localStorage.getItem('token'); 
     try {
-        const res = await axios.post('https://prak-swe.onrender.com/student', newStudent, {
-            headers: {
-              Authorization: `Bearer ${token}`, 
-            }
-          });      
-        setStudents([...students, res.data]);
-        setFilteredStudents([...filteredStudents, res.data]);
-        setShowAddStudentForm(false);
-        alert('Student added successfully!');
+      const res = await axios.post('https://prak-swe.onrender.com/student', newStudent, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+      setStudents([...students, res.data]);
+      setFilteredStudents([...filteredStudents, res.data]);
+      setShowAddStudentForm(false);
+      alert('Student added successfully!');
     } catch (error) {
       console.error('Error adding student:', error);
       alert('Failed to add student.');
     }
   };
 
+  const handleUpdateClick = (studentId) => {
+    navigate(`/student/edit/${studentId}`); // Chuyển hướng đến trang chỉnh sửa
+  };
+
+  const handleDeleteClick = async (studentId) => {
+    const token = localStorage.getItem('token');
+    if (window.confirm('Are you sure you want to delete this student?')) {
+      try {
+        await axios.delete(`https://prak-swe.onrender.com/student/${studentId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setStudents(students.filter(student => student.id !== studentId));
+        setFilteredStudents(filteredStudents.filter(student => student.id !== studentId));
+        alert('Student deleted successfully!');
+      } catch (error) {
+        console.error('Error deleting student:', error);
+        alert('Failed to delete student.');
+      }
+    }
+  };
   return (
     <div className={styles.container}>
       <h2>Student verwalten</h2>
@@ -83,8 +107,6 @@ function StudentManagement() {
 
       <div className={styles.buttonContainer}>
         <button onClick={handleAddStudentClick} className={styles.addButton}>Add Student</button>
-        <button className={styles.updateButton}>Update Student</button>
-        <button className={styles.deleteButton}>Delete Student</button>
       </div>
 
       {showAddStudentForm && (
@@ -107,6 +129,7 @@ function StudentManagement() {
             <th>Geburtsdatum</th>
             <th>Fachbereich ID</th>
             <th>Semester</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -118,6 +141,10 @@ function StudentManagement() {
               <td>{student.geburtsdatum.split('T')[0]}</td>
               <td>{student.fachbereich_id}</td>
               <td>{student.semester}</td>
+              <td>
+                <button onClick={() => handleUpdateClick(student.id)}>Update</button>
+                <button onClick={() => handleDeleteClick(student.id)}>Delete</button>
+              </td>
             </tr>
           ))}
         </tbody>
