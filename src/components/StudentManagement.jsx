@@ -15,6 +15,10 @@ function StudentManagement() {
     fachbereich_id: '',
     semester: '',
   });
+  const [updatedStudent, setUpdatedStudent] = useState(null); // Thêm state cho sinh viên đang cập nhật
+  const [showUpdateForm, setShowUpdateForm] = useState(false); // Biến state để kiểm soát việc hiển thị form cập nhật
+ 
+
   const navigate = useNavigate(); // Sử dụng useNavigate hook
 
   useEffect(() => {
@@ -49,6 +53,7 @@ function StudentManagement() {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setNewStudent(prevState => ({ ...prevState, [name]: value }));
+    //setUpdatedStudent(prevState => ({ ...prevState, [name]: value }));
   };
 
   const handleSubmit = async (event) => {
@@ -71,8 +76,49 @@ function StudentManagement() {
     }
   };
 
-  const handleUpdateClick = (studentId) => {
-    navigate(`/student/edit/${studentId}`); // Chuyển hướng đến trang chỉnh sửa
+  const handleUpdateClick = (student) => {
+    setUpdatedStudent(student);
+    setShowUpdateForm(true);
+  };
+
+  const handleUpdateInputChange = (event) => {
+    const { name, value } = event.target;
+    setUpdatedStudent(prevState => ({ ...prevState, [name]: value }));
+  };
+
+  const handleUpdateSubmit = async (event) => {
+    event.preventDefault();
+    const token = localStorage.getItem('token');
+    try {
+      const updateData = { ...updatedStudent };
+      for (const key in updateData) {
+        if (updateData[key] === '') {
+          delete updateData[key];
+        }
+      }
+      await axios.put(`https://prak-swe.onrender.com/student/${updatedStudent.id}`, updateData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+
+      const updatedStudents = students.map(student => {
+        if (student.id === updatedStudent.id) {
+          return { ...student, ...updateData };
+        }
+        return student;
+      });
+      setStudents(updatedStudents);
+      setFilteredStudents(updatedStudents.filter(student =>
+        student.id.toString().includes(studentIdFilter)
+      ));
+      setShowUpdateForm(false);
+      setUpdatedStudent(null);
+      alert('Student updated successfully!');
+    } catch (error) {
+      console.error('Error updating student:', error);
+      alert('Failed to update student.');
+    }
   };
 
   const handleDeleteClick = async (studentId, studentName) => {
@@ -86,13 +132,14 @@ function StudentManagement() {
         });
         setStudents(students.filter(student => student.id !== studentId));
         setFilteredStudents(filteredStudents.filter(student => student.id !== studentId));
-        alert('Student deleted successfully!');
       } catch (error) {
         console.error('Error deleting student:', error);
         alert('Failed to delete student.');
       }
     }
   };
+
+
 
   return (
     <div className={styles.container}>
@@ -121,6 +168,18 @@ function StudentManagement() {
         </form>
       )}
 
+      {showUpdateForm && updatedStudent && (
+        <form onSubmit={handleUpdateSubmit} className={styles.form}>
+          <h2>Update Student</h2>
+          <input type="text" name="name" placeholder="Name" value={updatedStudent.name} onChange={handleUpdateInputChange} />
+          <input type="email" name="email" placeholder="Email" value={updatedStudent.email} onChange={handleUpdateInputChange} />
+          <input type="date" name="geburtsdatum" placeholder="Geburtsdatum" value={updatedStudent.geburtsdatum.split('T')[0]} onChange={handleUpdateInputChange} />
+          <input type="number" name="fachbereich_id" placeholder="Fachbereich ID" value={updatedStudent.fachbereich_id} onChange={handleUpdateInputChange} />
+          <input type="number" name="semester" placeholder="Semester" value={updatedStudent.semester} onChange={handleUpdateInputChange} />
+          <button type="submit">Update</button>
+        </form>
+      )}
+
       <table className={styles.table}>
         <thead>
           <tr>
@@ -143,7 +202,7 @@ function StudentManagement() {
               <td>{student.fachbereich_id}</td>
               <td>{student.semester}</td>
               <td>
-                <button onClick={() => handleUpdateClick(student.id)}>Update</button>
+                <button onClick={() => handleUpdateClick(student)}>Update</button>
                 <button onClick={() => handleDeleteClick(student.id, student.name)}>Delete</button>
               </td>
             </tr>
