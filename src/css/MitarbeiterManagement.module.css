@@ -104,3 +104,13 @@
     padding: 10px; 
     margin-bottom: 10px;
   }
+  .table tr td form {
+    display: flex;
+    justify-content: flex-end; /* Căn phải form */
+  }
+  
+  .table tr td form input {
+    display: block; /* Sắp xếp các input theo chiều dọc */
+    width: 20%; /* Cho các input chiếm toàn bộ chiều rộng */
+    margin-bottom: 5px; /* Khoảng cách giữa các input */
+  }

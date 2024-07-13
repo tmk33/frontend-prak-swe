@@ -14,6 +14,10 @@ function MitarbeiterManagement() {
     geburtsdatum: '',
     rolle: '',
   });
+  const [showKrankmeldungForm, setShowKrankmeldungForm] = useState({}); // State để theo dõi form nào đang mở
+  const [krankmeldungResponse, setKrankmeldungResponse] = useState(null); // Thêm state để lưu trữ response
+
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -70,12 +74,52 @@ function MitarbeiterManagement() {
     }
   };
 
+  const handleKrankmeldungClick = (mitarbeiterId) => {
+    setShowKrankmeldungForm(prevState => ({
+      ...prevState,
+      [mitarbeiterId]: !prevState[mitarbeiterId] // Đảo ngược trạng thái hiển thị form
+    }));
+  };
+
+  const handleKrankmeldungSubmit = async (mitarbeiterId, event) => {
+    event.preventDefault();
+    const token = localStorage.getItem('token');
+    const wochentag = event.target.wochentag.value;
+    const date = event.target.date.value;
+
+    try {
+      const res = await axios.post('https://prak-swe.onrender.com/krankmeldung', {
+        mitarbeiterId,
+        wochentag,
+        date,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+
+      setKrankmeldungResponse(res.data); // Lưu response vào state
+      setShowKrankmeldungForm(prevState => ({
+        ...prevState,
+        [mitarbeiterId]: false // Đóng form sau khi gửi thành công
+      }));
+    } catch (error) {
+      console.error('Error sending Krankmeldung:', error);
+      alert('Failed to send Krankmeldung.');
+    }
+  };
+
   
 
   return (
     <div className={styles.container}>
       <h1>Mitarbeiter verwalten</h1>
-
+      {krankmeldungResponse && ( // Hiển thị response nếu có
+        <div className={styles.response}>
+          <h3>Krankmeldung Response:</h3>
+          <pre>{JSON.stringify(krankmeldungResponse, null, 2)}</pre>
+        </div>
+      )}
       <input
         type="text"
         placeholder="Filter by Mitarbeiter ID"
@@ -112,17 +156,34 @@ function MitarbeiterManagement() {
             <th>Email</th>
             <th>Geburtsdatum</th>
             <th>Rolle</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
           {filteredMitarbeiter.map(mitarbeiter => (
-            <tr key={mitarbeiter.id}>
+            <React.Fragment key={mitarbeiter.id}>
+              <tr>
               <td>{mitarbeiter.id}</td>
               <td>{mitarbeiter.name}</td>
               <td>{mitarbeiter.email}</td>
               <td>{mitarbeiter.geburtsdatum.split('T')[0]}</td> 
               <td>{mitarbeiter.rolle}</td>
-            </tr>
+              <td>
+                <button onClick={() => handleKrankmeldungClick(mitarbeiter.id)}>Krankmeldung</button> {/* Thêm nút Krankmeldung */}
+              </td>
+              </tr>
+              {showKrankmeldungForm[mitarbeiter.id] && ( 
+                <tr>
+                <td colSpan="7"> 
+                  <form onSubmit={(e) => handleKrankmeldungSubmit(mitarbeiter.id, e)} className={styles.krankmeldungForm}> 
+                    <input type="text" name="wochentag" placeholder="Wochentag (mon, tue, wed,...)" required />
+                    <input type="date" name="date" placeholder="Date (DD-MM-YYYY)" required />
+                    <button type="submit">Submit</button>
+                  </form>
+                </td>
+              </tr>
+              )}
+            </React.Fragment>
           ))}
         </tbody>
       </table>
