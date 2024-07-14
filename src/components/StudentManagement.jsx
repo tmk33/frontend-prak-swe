@@ -61,6 +61,7 @@ function StudentManagement() {
 
     const token = localStorage.getItem('token'); 
     try {
+      alert(newStudent.geburtsdatum);
       const res = await axios.post('https://prak-swe.onrender.com/student', newStudent, {
         headers: {
           Authorization: `Bearer ${token}`,

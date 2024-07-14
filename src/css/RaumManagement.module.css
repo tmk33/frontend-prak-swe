@@ -1,5 +1,4 @@
-/* MitarbeiterManagement.module.css */
-
+/* RaumManagement.module.css */
 .container {
     display: flex;
     flex-direction: column;
@@ -30,24 +29,33 @@
   }
   
   .addButton {
-    background-color: #4CAF50; 
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    flex: 1; 
-  }
-
-  .updateButton {
-    background-color: #008CBA; 
+    background-color: #4CAF50; /* Green */
     color: white;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     flex: 1;
-    margin-right: 10px;
+  }
+  
+  .updateButton {
+    background-color: #008CBA; /* Blue */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    flex: 1;
+  }
+  
+  .deleteButton {
+    background-color: #f44336; /* Red */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    flex: 1;
   }
   
   .table {
@@ -73,7 +81,7 @@
     margin-bottom: 20px;
   }
   
-  .form input {
+  .form input, .form select { 
     margin-bottom: 10px;
     padding: 10px;
     border: 1px solid #ccc;
@@ -89,21 +97,5 @@
     cursor: pointer;
   }
   
-  .form select {
-    width: 100%; 
-    padding: 10px; 
-    margin-bottom: 10px;
-  }
-  .table tr td form {
-    display: flex;
-    justify-content: flex-end; 
-  }
-  
-  .table tr td form input {
-    display: block; 
-    width: 20%; 
-    margin-bottom: 5px; 
-  }
-
 
   

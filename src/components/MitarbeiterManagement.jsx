@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import styles from '../css/MitarbeiterManagement.module.css'; // Create this CSS file
+import styles from '../css/MitarbeiterManagement.module.css'; 
 
 function MitarbeiterManagement() {
   const [mitarbeiter, setMitarbeiter] = useState([]);
@@ -169,7 +169,7 @@ function MitarbeiterManagement() {
               <td>{mitarbeiter.geburtsdatum.split('T')[0]}</td> 
               <td>{mitarbeiter.rolle}</td>
               <td>
-                <button onClick={() => handleKrankmeldungClick(mitarbeiter.id)}>Krankmeldung</button> {/* Thêm nút Krankmeldung */}
+                <button className={styles.updateButton} onClick={() => handleKrankmeldungClick(mitarbeiter.id)}>Krankmeldung</button> 
               </td>
               </tr>
               {showKrankmeldungForm[mitarbeiter.id] && ( 
