@@ -201,7 +201,7 @@ function SonderveranstaltungManagement() {
             required 
           />
           <input 
-            type="text" 
+            type="number" 
             name="dauertStunden" 
             placeholder="Dauer (in Stunden)" 
             value={newSonderveranstaltung.dauertStunden} 

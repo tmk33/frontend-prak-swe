@@ -97,4 +97,28 @@
     border-radius: 5px;
     cursor: pointer;
   }
+
+  .form select {
+    width: 100%; 
+    padding: 10px; 
+    margin-bottom: 10px;
+  }
+
+  .form textarea {
+    width:95%; 
+    padding: 10px; 
+    margin-bottom: 10px;
+  }
+
+  .table tr td form {
+    display: flex;
+    justify-content: flex-end; 
+  }
+  
+  .table tr td form input {
+    display: block; 
+    width: 20%; 
+    margin-bottom: 5px; 
+  }
+
   
