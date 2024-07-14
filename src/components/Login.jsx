@@ -15,7 +15,6 @@ function Login() {
     try {
       const res = await axios.post('/admin/login', { email, password });
       localStorage.setItem('token', res.data.token);
-      alert('Login success!');
       navigate('/admin-dashboard');
     } catch (error) {
       console.error("Login error:", error);
