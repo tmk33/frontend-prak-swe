@@ -117,9 +117,8 @@ function KursManagement() {
 
   return (
     <div className={styles.container}>
-      <h2>Kurs verwalten</h2>
+      <h1>Kurs verwalten</h1>
 
-      {/* Filter Options */}
       <select value={filterType} onChange={handleFilterChange}>
         <option value="none">No Filter</option>
         <option value="fachbereich">By Fachbereich ID</option>
@@ -127,22 +126,21 @@ function KursManagement() {
         <option value="dozentName">By Dozent Name</option>
       </select>
       {filterType !== 'none' && (
-        <input 
-          type="text" 
-          placeholder={`Enter ${filterType === 'fachbereich' ? 'Fachbereich ID' : 'Dozent ID or Name'}`}
-          value={filterValue}
-          onChange={handleFilterValueChange} 
+        <input
+            type={filterType === 'dozentName' ? 'text' : 'number'}  // Conditional input type
+            placeholder={filterType === 'fachbereich' ? 'Fachbereich ID' : (filterType === 'dozentId' ? 'Dozent ID' : 'Dozent Name')}            value={filterValue}
+            onChange={handleFilterValueChange} 
         />
       )}
 
-      {/* Add Button */}
+      
     <div className={styles.buttonContainer}>
       <button onClick={handleAddClick} className={styles.addButton}>
         Add Kurs
       </button>
     </div>
 
-    {/* Add Form */}
+    
     {showAddForm && (
       <form onSubmit={handleSubmit} className={styles.form}>
         <input 
@@ -192,7 +190,7 @@ function KursManagement() {
               <td>{kurs.raum}</td>
               <td>{kurs.fachbereich}</td>
             <td>
-              <button onClick={() => handleDeleteClick(kurs.kurs_id)}>Delete</button>
+              <button className={styles.deleteButton} onClick={() => handleDeleteClick(kurs.kurs_id)}>Delete</button>
             </td>
           </tr>
         ))}
