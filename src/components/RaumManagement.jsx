@@ -69,7 +69,7 @@ function RaumManagement() {
 
   return (
     <div className={styles.container}>
-      <h2>Raum verwalten</h2>
+      <h1>Raum verwalten</h1>
 
       <input
         type="text"

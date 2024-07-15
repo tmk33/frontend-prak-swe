@@ -114,7 +114,7 @@ function MitarbeiterManagement() {
   return (
     <div className={styles.container}>
       <h1>Mitarbeiter verwalten</h1>
-      {krankmeldungResponse && ( // Hiển thị response nếu có
+      {krankmeldungResponse && ( 
         <div className={styles.response}>
           <h3>Krankmeldung Response:</h3>
           <pre>{JSON.stringify(krankmeldungResponse, null, 2)}</pre>

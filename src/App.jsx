@@ -9,6 +9,7 @@ import MitarbeiterManagement from './components/MitarbeiterManagement';
 import KursManagement from './components/KursManagement';
 import SonderveranstaltungManagement from './components/SonderveranstaltungManagement';
 import RaumManagement from './components/RaumManagement';
+import FachbereichManagement from './components/FachbereichManagement';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
           <Route path="/kurs" element={<KursManagement />} />
           <Route path="/sonderveranstaltung" element={<SonderveranstaltungManagement />} />
           <Route path="/raum" element={<RaumManagement />} />
+          <Route path="/fachbereich" element={<FachbereichManagement />} />
         </Route>
         <Route path="/" element={<KursList />} /> 
       </Routes>

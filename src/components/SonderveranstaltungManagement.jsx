@@ -148,7 +148,7 @@ function SonderveranstaltungManagement() {
 
   return (
     <div className={styles.container}>
-      <h2>Sonderveranstaltung verwalten</h2>
+      <h1>Sonderveranstaltung verwalten</h1>
 
       <input
         type="text"
