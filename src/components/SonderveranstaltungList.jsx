@@ -19,7 +19,7 @@ function SonderveranstaltungList() {
     fetchSonderveranstaltungen();
   }, []);
 
-  /** 
+  
   useEffect(() => {
     const fetchDetails = async () => {
       const mitarbeiterPromises = sonderveranstaltungen.map(sv => 
@@ -50,7 +50,7 @@ function SonderveranstaltungList() {
     }
   }, [sonderveranstaltungen]); 
 
-  */
+  
 
   return (
     <div className={styles.container}>
