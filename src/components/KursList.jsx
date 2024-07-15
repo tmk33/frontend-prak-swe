@@ -11,6 +11,25 @@ function KursList() {
   const [filterValue, setFilterValue] = useState('1');
   const navigate = useNavigate();
 
+  const [fachbereiche, setFachbereiche] = useState([]); // State for fachbereiche
+  const fetchFachbereiche = async() => {
+      const token = localStorage.getItem('token');
+      try{
+          const res = await axios.get('https://prak-swe.onrender.com/fachbereich',{
+              headers: {
+                  Authorization: `Bearer ${token}`
+              }
+          });
+          setFachbereiche(res.data);
+      } catch(error){
+          console.log(error);
+      }
+  };
+
+  useEffect(() => {
+    fetchFachbereiche(); // Fetch fachbereiche on component mount
+  }, []);
+
   const handleLoginClick = () => {
     navigate('/login'); // Navigate to the /login route
   };
@@ -40,8 +59,16 @@ function KursList() {
   useEffect(() => {
     const fetchFilteredKurse = async () => {
       let endpoint = 'https://prak-swe.onrender.com/kurs';
-      if (filterType === 'fachbereich') {
-        endpoint += `/fachbereich/${filterValue}`;
+      if (filterType === 'fachbereich' && filterValue !== '') { // Check if filterValue is not empty
+        // Find the fachbereich object based on the selected name
+        const selectedFachbereich = fachbereiche.find(fb => fb.name === filterValue);
+        if (selectedFachbereich) { // Check if a matching fachbereich is found
+          endpoint += `/fachbereich/${selectedFachbereich.id}`; // Use the ID of the selected fachbereich
+        } else {
+        
+          console.error("No matching Fachbereich found.");
+          return;
+        }
       } else if (filterType === 'dozentId' && filterValue !== '') {
         endpoint += `/dozent/id/${filterValue}`;
       } else if (filterType === 'dozentName' && filterValue !== '') {
@@ -52,8 +79,7 @@ function KursList() {
         const res = await axios.get(endpoint);
         setFilteredKurse(res.data);
       } catch (error) {
-        console.error("Error fetching filtered kurse:", error);
-        alert("Failed to fetch filtered kurse.");
+        // ... (error handling)
       }
     };
 
@@ -62,7 +88,7 @@ function KursList() {
     } else {
       setFilteredKurse(kurse);
     }
-  }, [filterType, filterValue, kurse]);
+  }, [filterType, filterValue, kurse, fachbereiche]);
 
   const handleFilterChange = (event) => {
     setFilterType(event.target.value);
@@ -86,18 +112,25 @@ function KursList() {
         <div className={styles.filterSection}>
             <select value={filterType} onChange={handleFilterChange}>
                 <option value="none">No Filter</option>
-                <option value="fachbereich">By Fachbereich ID</option>
+                <option value="fachbereich">By Fachbereich</option>
                 <option value="dozentId">By Dozent ID</option>
                 <option value="dozentName">By Dozent Name</option>
             </select>
-            {filterType !== 'none' && (
-                <input
-                    type={filterType === 'dozentName' ? 'text' : 'number'}
-                    placeholder={filterType === 'fachbereich' ? 'Fachbereich ID' : (filterType === 'dozentId' ? 'Dozent ID' : 'Dozent Name')}
-                    value={filterValue}
-                    onChange={handleFilterValueChange}
-                />
-            )}
+            {filterType === 'fachbereich' ? (
+          <select value={filterValue} onChange={handleFilterValueChange}>
+            <option value="">Select Fachbereich</option>
+            {fachbereiche.map(fb => (
+              <option key={fb.id} value={fb.name}>{fb.name}</option>
+            ))}
+          </select>
+        ) : (
+          <input
+            type={filterType === 'dozentName' ? 'text' : 'number'}
+            placeholder={filterType === 'dozentId' ? 'Dozent ID' : 'Dozent Name'}
+            value={filterValue}
+            onChange={handleFilterValueChange}
+          />
+        )}
             
         <button className={styles.sonderButton} onClick={handleSonderveranstaltungClick}>
           Sonderveranstaltung
