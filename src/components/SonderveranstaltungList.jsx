@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from '../css/SonderveranstaltungList.module.css'; 
+import { useNavigate } from 'react-router-dom';
+
 
 function SonderveranstaltungList() {
   const [sonderveranstaltungen, setSonderveranstaltungen] = useState([]);
+
+  const navigate = useNavigate();
+
+  const handleBackClick = () => {
+    navigate('/');
+  };
 
   useEffect(() => {
     const fetchSonderveranstaltungen = async () => {
@@ -54,6 +62,9 @@ function SonderveranstaltungList() {
 
   return (
     <div className={styles.container}>
+      <div className={styles.buttonContainer}>  
+        <button onClick={handleBackClick} className={styles.backButton}>Back</button> 
+      </div>
       <h1>Sonderveranstaltungen</h1>
 
       <ul className={styles.list}>

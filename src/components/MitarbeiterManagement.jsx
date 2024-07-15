@@ -81,7 +81,7 @@ function MitarbeiterManagement() {
   const handleKrankmeldungClick = (mitarbeiterId) => {
     setShowKrankmeldungForm(prevState => ({
       ...prevState,
-      [mitarbeiterId]: !prevState[mitarbeiterId] // Đảo ngược trạng thái hiển thị form
+      [mitarbeiterId]: !prevState[mitarbeiterId]
     }));
   };
 
@@ -102,10 +102,10 @@ function MitarbeiterManagement() {
         }
       });
 
-      setKrankmeldungResponse(res.data); // Lưu response vào state
+      setKrankmeldungResponse(res.data); 
       setShowKrankmeldungForm(prevState => ({
         ...prevState,
-        [mitarbeiterId]: false // Đóng form sau khi gửi thành công
+        [mitarbeiterId]: false 
       }));
     } catch (error) {
       console.error('Error sending Krankmeldung:', error);
