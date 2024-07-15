@@ -7,18 +7,38 @@ import { useNavigate } from 'react-router-dom';
 function KursManagement() {
   const [kurse, setKurse] = useState([]);
   const [filteredKurse, setFilteredKurse] = useState([]);
-  const [filterType, setFilterType] = useState('none'); // 'none', 'fachbereich', 'dozentId', 'dozentName'
+  const [filterType, setFilterType] = useState('none'); 
   const [filterValue, setFilterValue] = useState('');
   const [showAddForm, setShowAddForm] = useState(false);
   const [newKurs, setNewKurs] = useState({
     name: '',
     fachbereichId: '',
   });
+  const [fachbereiche, setFachbereiche] = useState([]);
+
   const navigate = useNavigate();
 
   const handleBackClick = () => {
     navigate('/admin-dashboard');
   };
+
+  const fetchFachbereiche = async() => {
+        const token = localStorage.getItem('token');
+        try{
+            const res = await axios.get('https://prak-swe.onrender.com/fachbereich',{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setFachbereiche(res.data);
+        } catch(error){
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+    fetchFachbereiche(); 
+    }, []);
 
   const fetchKurse = async () => {
     try {
@@ -32,7 +52,7 @@ function KursManagement() {
   };
 
   useEffect(() => {
-    fetchKurse(); // Call fetchKurse when the component mounts
+    fetchKurse(); 
   }, []);
 
   useEffect(() => {
@@ -48,7 +68,7 @@ function KursManagement() {
 
       try {
         const res = await axios.get(endpoint);
-        setFilteredKurse(res.data);
+        setFilteredKurse(res.data);
       } catch (error) {
         console.error("Error fetching filtered kurse:", error);
         alert("Failed to fetch filtered kurse.");
@@ -64,7 +84,7 @@ function KursManagement() {
 
   const handleFilterChange = (event) => {
     setFilterType(event.target.value);
-    setFilterValue(''); // Clear filter value when type changes
+    setFilterValue(''); 
   };
 
   const handleFilterValueChange = (event) => {
@@ -130,20 +150,30 @@ function KursManagement() {
       </div>
       <h1>Kurs verwalten</h1>
 
-      <select value={filterType} onChange={handleFilterChange}>
-        <option value="none">No Filter</option>
-        <option value="fachbereich">By Fachbereich ID</option>
-        <option value="dozentId">By Dozent ID</option>
-        <option value="dozentName">By Dozent Name</option>
-      </select>
-      {filterType !== 'none' && (
-        <input
-            type={filterType === 'dozentName' ? 'text' : 'number'}  // Conditional input type
-            placeholder={filterType === 'fachbereich' ? 'Fachbereich ID' : (filterType === 'dozentId' ? 'Dozent ID' : 'Dozent Name')}            
+      <div className={styles.filterSection}>
+        <select value={filterType} onChange={handleFilterChange}>
+          <option value="none">No Filter</option>
+          <option value="fachbereich">By Fachbereich</option> 
+          <option value="dozentId">By Dozent ID</option>
+          <option value="dozentName">By Dozent Name</option>
+        </select>
+
+        {filterType === 'fachbereich' ? ( 
+          <select value={filterValue} onChange={handleFilterValueChange}>
+            <option value="">Select Fachbereich</option>
+            {fachbereiche.map(fb => (
+              <option key={fb.id} value={fb.id}>{fb.name}</option>
+            ))}
+          </select>
+        ) : ( 
+          <input
+            type={filterType === 'dozentName' ? 'text' : 'number'}
+            placeholder={filterType === 'dozentId' ? 'Dozent ID' : 'Dozent Name'}
             value={filterValue}
-            onChange={handleFilterValueChange} 
-        />
-      )}
+            onChange={handleFilterValueChange}
+          />
+        )}
+      </div>
 
       
     <div className={styles.buttonContainer}>
@@ -163,14 +193,17 @@ function KursManagement() {
           onChange={handleInputChange}
           required 
         />
-        <input 
-          type="number" 
-          name="fachbereichId" 
-          placeholder="Fachbereich ID"
-          value={newKurs.fachbereichId} 
-          onChange={handleInputChange}
-          required 
-        />
+        <select className={styles.filterSelect}
+            name="fachbereichId" 
+            value={newKurs.fachbereichId} 
+            onChange={handleInputChange} 
+            required
+        >
+            <option value="">Select Fachbereich</option>
+            {fachbereiche.map(fb => (
+              <option key={fb.id} value={fb.id}>{fb.name}</option> 
+            ))}
+        </select>
         <button type="submit">Add</button>
       </form>
     )}
