@@ -1,0 +1,67 @@
+/* KursList.module.css */
+
+.container {
+    font-family: sans-serif; /* Use a modern font */
+    max-width: 1500px; /* Limit container width for better readability */
+    margin: 20px auto; /* Center the container */
+    padding: 20px;
+    border: 1px solid #ddd; /* Add a subtle border */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a shadow */
+  }
+  
+  .filterSection {
+    margin-bottom: 20px;
+  }
+  
+  .filterSection select,
+  .filterSection input {
+    padding: 12px; /* Increased padding */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin: 0 10px 10px 0; /* Add margin around the elements */
+    width: 200px; /* Tăng độ rộng của ô input */
+    box-sizing: border-box; /* Bao gồm padding và border trong chiều rộng */
+  }
+  
+  .filterSection select {
+    width: 250px; /* Tăng độ rộng của ô select */
+  }
+  
+  .scheduleTable {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* Ensure columns have equal width */
+  }
+  
+  .scheduleTable th,
+  .scheduleTable td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+  }
+  
+  .scheduleTable th {
+    background-color: #f2f2f2; /* Light gray background for headers */
+    font-weight: bold;
+  }
+  
+  .kurs {
+    background-color: #f9f9f9; /* Very light gray background for course items */
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+    margin: 5px;
+  }
+  
+  .kursName {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .raum,
+  .dozent {
+    font-size: 0.9em; /* Slightly smaller font for room and lecturer */
+    color: #555; /* Darker gray for secondary information */
+  }
+  

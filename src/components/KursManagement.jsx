@@ -62,6 +62,7 @@ function KursManagement() {
 
   const handleFilterValueChange = (event) => {
     setFilterValue(event.target.value);
+
   };
 
 
@@ -128,7 +129,8 @@ function KursManagement() {
       {filterType !== 'none' && (
         <input
             type={filterType === 'dozentName' ? 'text' : 'number'}  // Conditional input type
-            placeholder={filterType === 'fachbereich' ? 'Fachbereich ID' : (filterType === 'dozentId' ? 'Dozent ID' : 'Dozent Name')}            value={filterValue}
+            placeholder={filterType === 'fachbereich' ? 'Fachbereich ID' : (filterType === 'dozentId' ? 'Dozent ID' : 'Dozent Name')}            
+            value={filterValue}
             onChange={handleFilterValueChange} 
         />
       )}

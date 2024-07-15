@@ -1,83 +1,119 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import styles from '../css/KursList.module.css';
+
 
 function KursList() {
   const [kurse, setKurse] = useState([]);
-  const [error, setError] = useState(null);
-  const [fachbereichId, setFachbereichId] = useState(1); 
-  const navigate = useNavigate(); 
+  const [filteredKurse, setFilteredKurse] = useState([]);
+  const [filterType, setFilterType] = useState('fachbereich');
+  const [filterValue, setFilterValue] = useState('1');
 
-  const handleAdminLoginClick = () => {
-    navigate('/login'); 
+  const wochentage = ['mon', 'tue', 'wed', 'thu', 'fri'];
+  const zeitfenster = ['08:00-10:00', '10:00-12:00', '12:00-14:00', '14:00-16:00', '16:00-18:00'];
+
+  const fetchKurse = async () => {
+    try {
+      const res = await axios.get('https://prak-swe.onrender.com/kurs');
+      setKurse(res.data);
+      setFilteredKurse(res.data);
+    } catch (error) {
+      console.error("Error fetching kurse:", error);
+      alert("Failed to fetch kurse.");
+    }
   };
 
   useEffect(() => {
-    const fetchKurse = async () => {
+    fetchKurse(); // Call fetchKurse when the component mounts
+  }, []);
+
+  useEffect(() => {
+    const fetchFilteredKurse = async () => {
+      let endpoint = 'https://prak-swe.onrender.com/kurs';
+      if (filterType === 'fachbereich') {
+        endpoint += `/fachbereich/${filterValue}`;
+      } else if (filterType === 'dozentId' && filterValue !== '') {
+        endpoint += `/dozent/id/${filterValue}`;
+      } else if (filterType === 'dozentName' && filterValue !== '') {
+        endpoint += `/dozent/name/${encodeURIComponent(filterValue)}`;
+      }
+
       try {
-        const response = await axios.get(`https://prak-swe.onrender.com/kurs/fachbereich/${fachbereichId}`);
-        setKurse(response.data);
-        setError(null);
+        const res = await axios.get(endpoint);
+        setFilteredKurse(res.data);
       } catch (error) {
-        setError(error.message);
-        setKurse([]);
+        console.error("Error fetching filtered kurse:", error);
+        alert("Failed to fetch filtered kurse.");
       }
     };
 
-    fetchKurse();
-  }, [fachbereichId]); 
+    if (filterValue) {
+      fetchFilteredKurse();
+    } else {
+      setFilteredKurse(kurse);
+    }
+  }, [filterType, filterValue, kurse]);
 
-  const handleFachbereichIdChange = (event) => {
-    setFachbereichId(event.target.value);
+  const handleFilterChange = (event) => {
+    setFilterType(event.target.value);
+    setFilterValue('');
+  };
+
+  const handleFilterValueChange = (event) => {
+    setFilterValue(event.target.value);
+    console.log(filteredKurse);
   };
 
   return (
-    <div>
-      <div>
-        <label htmlFor="fachbereichId">Fachbereich ID:</label>
-        <input
-          type="number"
-          id="fachbereichId"
-          value={fachbereichId}
-          onChange={handleFachbereichIdChange}
-        />
-        <button onClick={handleAdminLoginClick}>Admin Login</button>
-      </div>
+    <div className={styles.container}>
+        <h2>Kurs Schedule</h2>
 
-      {error ? (
-        <p style={{ color: 'red' }}>Error: {error}</p>
-      ) : (
-        <table border="1">
-          <thead>
-            <tr>
-              <th>Kurs ID</th>
-              <th>Kurs Name</th>
-              <th>Wochentag</th>
-              <th>Start</th>
-              <th>End</th>
-              <th>Dozent</th>
-              <th>Raum</th>
-              <th>Fachbereich</th>
-            </tr>
-          </thead>
-          <tbody>
-            {kurse.map(kurs => (
-              <tr key={kurs.kurs_id}>
-                <td>{kurs.kurs_id}</td>
-                <td>{kurs.kurs_name}</td>
-                <td>{kurs.wochentag}</td>
-                <td>{kurs.starttime}</td>
-                <td>{kurs.endtime}</td>
-                <td>{kurs.dozent}</td>
-                <td>{kurs.raum}</td>
-                <td>{kurs.fachbereich}</td>
-              </tr>
-            ))}
-          </tbody>
+        {/* Filter Options */}
+        <div className={styles.filterSection}>
+            <select value={filterType} onChange={handleFilterChange}>
+                <option value="none">No Filter</option>
+                <option value="fachbereich">By Fachbereich ID</option>
+                <option value="dozentId">By Dozent ID</option>
+                <option value="dozentName">By Dozent Name</option>
+            </select>
+            {filterType !== 'none' && (
+                <input
+                    type={filterType === 'dozentName' ? 'text' : 'number'}
+                    placeholder={filterType === 'fachbereich' ? 'Fachbereich ID' : (filterType === 'dozentId' ? 'Dozent ID' : 'Dozent Name')}
+                    value={filterValue}
+                    onChange={handleFilterValueChange}
+                />
+            )}
+        </div>
+
+        {/* Schedule Table */}
+        <table className={styles.scheduleTable}>
+            <thead>
+                <tr><th></th>{wochentage.map(tag => <th key={tag}>{tag.toUpperCase()}</th>)}</tr>
+            </thead>
+            <tbody>
+                {zeitfenster.map(zeit => (
+                    <tr key={zeit}><th>{zeit}</th>
+                        {wochentage.map(tag => {
+                            const kurs = filteredKurse.find(k => k.wochentag === tag && k.starttime.slice(0, -3) === zeit.split('-')[0]);
+                            return (
+                                <td key={tag + zeit}>
+                                    {kurs ? (
+                                        <div className={styles.kurs}>
+                                            <p className={styles.kursName}>{kurs.kurs_name}</p>
+                                            <p className={styles.raum}>Raum: {kurs.raum}</p>
+                                            <p className={styles.dozent}>Dozent: {kurs.dozent}</p>
+                                        </div>
+                                    ) : null}
+                                </td>
+                            );
+                        })}
+                    </tr>
+                ))}
+            </tbody>
         </table>
-      )}
     </div>
-  );
+);
 }
 
 export default KursList;
