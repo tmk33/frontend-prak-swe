@@ -72,26 +72,38 @@
   
   .loginButtonContainer {
     display: flex;
-    justify-content: flex-end; /* Đẩy nút về phía bên phải */
-    margin-bottom: 20px; /* Khoảng cách giữa nút và bảng */
+    justify-content: flex-end; 
+    margin-bottom: 20px; 
   }
   
   .loginButton {
-    background-color: #007bff; /* Màu xanh dương */
+    background-color: #007bff; 
     color: white;
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu mượt mà */
+    transition: background-color 0.3s ease; 
   }
   
   .loginButton:hover {
-    background-color: #0056b3; /* Màu xanh đậm hơn khi hover */
+    background-color: #0056b3; 
   }
   
   .loginButton:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Hiệu ứng focus */
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); 
+  }
+
+  .sonderButton {
+
+    background-color: #46c741 ;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
   }

@@ -15,6 +15,10 @@ function KursList() {
     navigate('/login'); // Navigate to the /login route
   };
 
+  const handleSonderveranstaltungClick = () => {
+    navigate('/forall/sonderveranstaltung'); 
+  };
+
   const wochentage = ['mon', 'tue', 'wed', 'thu', 'fri'];
   const zeitfenster = ['08:00-10:00', '10:00-12:00', '12:00-14:00', '14:00-16:00', '16:00-18:00'];
 
@@ -94,6 +98,11 @@ function KursList() {
                     onChange={handleFilterValueChange}
                 />
             )}
+            
+        <button className={styles.sonderButton} onClick={handleSonderveranstaltungClick}>
+          Sonderveranstaltung
+        </button>
+      
         </div>
 
         {/* Schedule Table */}

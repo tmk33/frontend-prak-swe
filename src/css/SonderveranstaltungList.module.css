@@ -1,0 +1,25 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    width: 80%; 
+    margin: 0 auto; 
+  }
+  
+  .list {
+    list-style: none; 
+    padding: 0;
+  }
+  
+  .listItem {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  
+  .listItem h3 {
+    margin-top: 0;
+  }
+  

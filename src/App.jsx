@@ -10,7 +10,7 @@ import KursManagement from './components/KursManagement';
 import SonderveranstaltungManagement from './components/SonderveranstaltungManagement';
 import RaumManagement from './components/RaumManagement';
 import FachbereichManagement from './components/FachbereichManagement';
-
+import SonderveranstaltungList from './components/SonderveranstaltungList';
 
 function App() {
   return (
@@ -27,6 +27,7 @@ function App() {
           <Route path="/fachbereich" element={<FachbereichManagement />} />
         </Route>
         <Route path="/" element={<KursList />} /> 
+        <Route path="/forall/sonderveranstaltung" element={<SonderveranstaltungList />} /> 
       </Routes>
     </BrowserRouter>
   );
