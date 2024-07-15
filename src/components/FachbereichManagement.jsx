@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from '../css/FachbereichManagement.module.css'; 
+import { useNavigate } from 'react-router-dom';
+
 
 function FachbereichManagement() {
   const [fachbereiche, setFachbereiche] = useState([]);
@@ -10,6 +12,12 @@ function FachbereichManagement() {
   const [newFachbereich, setNewFachbereich] = useState({
     name: '',
   });
+
+  const navigate = useNavigate();
+
+  const handleBackClick = () => {
+    navigate('/admin-dashboard');
+  };
 
   useEffect(() => {
     const fetchFachbereiche = async () => {
@@ -66,6 +74,9 @@ function FachbereichManagement() {
 
   return (
     <div className={styles.container}>
+        <div className={styles.buttonContainer}>  
+        <button onClick={handleBackClick} className={styles.backButton}>Back</button> 
+      </div>
       <h1>Fachbereich verwalten</h1>
 
       <input 

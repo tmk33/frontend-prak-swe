@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from '../css/KursManagement.module.css';
+import { useNavigate } from 'react-router-dom';
+
 
 function KursManagement() {
   const [kurse, setKurse] = useState([]);
@@ -12,6 +14,11 @@ function KursManagement() {
     name: '',
     fachbereichId: '',
   });
+  const navigate = useNavigate();
+
+  const handleBackClick = () => {
+    navigate('/admin-dashboard');
+  };
 
   const fetchKurse = async () => {
     try {
@@ -118,6 +125,9 @@ function KursManagement() {
 
   return (
     <div className={styles.container}>
+        <div className={styles.buttonContainer}>  
+        <button onClick={handleBackClick} className={styles.backButton}>Back</button> 
+      </div>
       <h1>Kurs verwalten</h1>
 
       <select value={filterType} onChange={handleFilterChange}>

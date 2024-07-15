@@ -19,7 +19,11 @@ function StudentManagement() {
   const [showUpdateForm, setShowUpdateForm] = useState(false); 
  
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+
+  const handleBackClick = () => {
+    navigate('/admin-dashboard');
+  }; 
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -144,6 +148,9 @@ function StudentManagement() {
 
   return (
     <div className={styles.container}>
+      <div className={styles.buttonContainer}>  
+        <button onClick={handleBackClick} className={styles.backButton}>Back</button> 
+      </div>
       <h1>Student verwalten</h1>
 
       <input

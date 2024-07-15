@@ -16,6 +16,11 @@ function SonderveranstaltungManagement() {
     dauertStunden: '', 
   });
   
+  const navigate = useNavigate();
+
+  const handleBackClick = () => {
+    navigate('/admin-dashboard');
+  };
 
   const fetchSonderveranstaltungen = async () => {  
     try {
@@ -148,6 +153,9 @@ function SonderveranstaltungManagement() {
 
   return (
     <div className={styles.container}>
+      <div className={styles.buttonContainer}>  
+        <button onClick={handleBackClick} className={styles.backButton}>Back</button> 
+      </div>
       <h1>Sonderveranstaltung verwalten</h1>
 
       <input

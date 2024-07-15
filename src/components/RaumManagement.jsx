@@ -15,6 +15,10 @@ function RaumManagement() {
 
   const navigate = useNavigate();
 
+  const handleBackClick = () => {
+    navigate('/admin-dashboard');
+  };
+
   useEffect(() => {
     const fetchRaeume = async () => {
       try {
@@ -69,6 +73,9 @@ function RaumManagement() {
 
   return (
     <div className={styles.container}>
+      <div className={styles.buttonContainer}>  
+        <button onClick={handleBackClick} className={styles.backButton}>Back</button> 
+      </div>
       <h1>Raum verwalten</h1>
 
       <input

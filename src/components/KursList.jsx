@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from '../css/KursList.module.css';
+import { useNavigate } from 'react-router-dom';
 
 
 function KursList() {
@@ -8,6 +9,11 @@ function KursList() {
   const [filteredKurse, setFilteredKurse] = useState([]);
   const [filterType, setFilterType] = useState('fachbereich');
   const [filterValue, setFilterValue] = useState('1');
+  const navigate = useNavigate();
+
+  const handleLoginClick = () => {
+    navigate('/login'); // Navigate to the /login route
+  };
 
   const wochentage = ['mon', 'tue', 'wed', 'thu', 'fri'];
   const zeitfenster = ['08:00-10:00', '10:00-12:00', '12:00-14:00', '14:00-16:00', '16:00-18:00'];
@@ -66,9 +72,13 @@ function KursList() {
 
   return (
     <div className={styles.container}>
-        <h2>Kurs Schedule</h2>
-
-        {/* Filter Options */}
+      <div className={styles.loginButtonContainer}>
+        <button className={styles.loginButton} onClick={handleLoginClick}>
+          Login
+        </button>
+      </div>
+        <h1>Kurs Schedule</h1>
+        
         <div className={styles.filterSection}>
             <select value={filterType} onChange={handleFilterChange}>
                 <option value="none">No Filter</option>

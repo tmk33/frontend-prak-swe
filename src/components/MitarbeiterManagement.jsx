@@ -20,6 +20,10 @@ function MitarbeiterManagement() {
 
   const navigate = useNavigate();
 
+  const handleBackClick = () => {
+    navigate('/admin-dashboard');
+  };
+
   useEffect(() => {
     const fetchMitarbeiter = async () => {
       try {
@@ -113,6 +117,9 @@ function MitarbeiterManagement() {
 
   return (
     <div className={styles.container}>
+      <div className={styles.buttonContainer}>  
+        <button onClick={handleBackClick} className={styles.backButton}>Back</button> 
+      </div>
       <h1>Mitarbeiter verwalten</h1>
       {krankmeldungResponse && ( 
         <div className={styles.response}>
