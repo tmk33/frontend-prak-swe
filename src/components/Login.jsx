@@ -11,6 +11,10 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (password.length < 5) {
+      setErrorMessage('Password must be at least 5 characters long');
+      return; // Don't proceed with the login if password is too short
+    }
 
     try {
       const res = await axios.post('/admin/login', { email, password });
@@ -46,6 +50,7 @@ function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            minLength="5"
           />
         </div>
         <button type="submit">Login</button>
