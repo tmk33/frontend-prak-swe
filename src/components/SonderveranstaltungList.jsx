@@ -53,7 +53,7 @@ function SonderveranstaltungList() {
       }
     };
 
-    if (sonderveranstaltungen.length > 0) { // Chỉ fetch khi đã có dữ liệu sonderveranstaltungen
+    if (sonderveranstaltungen.length > 0) {
       fetchDetails();
     }
   }, [sonderveranstaltungen]); 

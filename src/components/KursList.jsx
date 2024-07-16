@@ -11,7 +11,7 @@ function KursList() {
   const [filterValue, setFilterValue] = useState('1');
   const navigate = useNavigate();
 
-  const [fachbereiche, setFachbereiche] = useState([]); // State for fachbereiche
+  const [fachbereiche, setFachbereiche] = useState([]); 
   const fetchFachbereiche = async() => {
       const token = localStorage.getItem('token');
       try{
@@ -27,11 +27,11 @@ function KursList() {
   };
 
   useEffect(() => {
-    fetchFachbereiche(); // Fetch fachbereiche on component mount
+    fetchFachbereiche(); 
   }, []);
 
   const handleLoginClick = () => {
-    navigate('/login'); // Navigate to the /login route
+    navigate('/login'); 
   };
 
   const handleSonderveranstaltungClick = () => {
@@ -53,17 +53,16 @@ function KursList() {
   };
 
   useEffect(() => {
-    fetchKurse(); // Call fetchKurse when the component mounts
+    fetchKurse(); 
   }, []);
 
   useEffect(() => {
     const fetchFilteredKurse = async () => {
       let endpoint = 'https://prak-swe.onrender.com/kurs';
-      if (filterType === 'fachbereich' && filterValue !== '') { // Check if filterValue is not empty
-        // Find the fachbereich object based on the selected name
+      if (filterType === 'fachbereich' && filterValue !== '') { 
         const selectedFachbereich = fachbereiche.find(fb => fb.name === filterValue);
-        if (selectedFachbereich) { // Check if a matching fachbereich is found
-          endpoint += `/fachbereich/${selectedFachbereich.id}`; // Use the ID of the selected fachbereich
+        if (selectedFachbereich) { 
+          endpoint += `/fachbereich/${selectedFachbereich.id}`; 
         } else {
         
           console.error("No matching Fachbereich found.");
@@ -79,7 +78,8 @@ function KursList() {
         const res = await axios.get(endpoint);
         setFilteredKurse(res.data);
       } catch (error) {
-        // ... (error handling)
+        console.error("Error fetching kurse:", error);
+        alert("Failed to fetch kurse.");
       }
     };
 
